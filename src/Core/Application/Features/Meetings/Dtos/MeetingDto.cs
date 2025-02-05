@@ -1,9 +1,8 @@
-﻿using Domain.Common;
+namespace Application.Features.Meetings.Dtos;
 
-namespace Domain.Entities;
-
-public class Meeting : BaseEntity
+public class MeetingDto
 {
+    public int Id { get; set; }
     public string? MeetingName { get; set; }
 
     public DateTime StartDate { get; set; }
@@ -13,6 +12,4 @@ public class Meeting : BaseEntity
     public string? Description { get; set; }
 
     public string? Document { get; set; }
-    public bool IsCancelled { get; set; }
-
 }

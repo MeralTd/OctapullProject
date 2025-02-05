@@ -1,7 +1,5 @@
-﻿using Domain.Common;
-using Domain.Entities;
+﻿using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Extensions.Configuration;
 using System.Reflection;
 
@@ -16,6 +14,7 @@ public partial class DataContext : DbContext
     public virtual DbSet<User> Users { get; set; }
 
     public DbSet<RefreshToken> RefreshTokens { get; set; }
+    public DbSet<MeetingDeleteLog> MeetingDeleteLog { get; set; }
 
     public DataContext()
     {
@@ -27,20 +26,6 @@ public partial class DataContext : DbContext
         Configuration = configuration;
     }
 
-    public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new())
-    {
-        IEnumerable<EntityEntry<BaseEntity>> entries = ChangeTracker
-            .Entries<BaseEntity>()
-            .Where(e => e.State == EntityState.Added || e.State == EntityState.Modified);
-
-        foreach (EntityEntry<BaseEntity> entry in entries)
-            _ = entry.State switch
-            {
-                EntityState.Added => entry.Entity.CreatedDate = DateTime.UtcNow,
-                EntityState.Modified => entry.Entity.UpdatedDate = DateTime.UtcNow
-            };
-        return await base.SaveChangesAsync(cancellationToken);
-    }
 
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

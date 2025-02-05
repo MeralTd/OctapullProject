@@ -29,19 +29,11 @@ public class BaseRepository<TEntity, TContext> : IAsyncRepository<TEntity>, IRep
 
     public async Task<TEntity> AddAsync(TEntity entity)
     {
+        // await using TContext _context = new();
+        entity.CreatedDate = DateTime.UtcNow;
+        await _context.AddAsync(entity);
+        await _context.SaveChangesAsync();
 
-
-        try
-        {
-            // await using TContext _context = new();
-            entity.CreatedDate = DateTime.UtcNow;
-            await _context.AddAsync(entity);
-            await _context.SaveChangesAsync();
-        }
-        catch (Exception ex)
-        {
-            throw new Exception(ex.Message);
-        }
         return entity;
     }
 
