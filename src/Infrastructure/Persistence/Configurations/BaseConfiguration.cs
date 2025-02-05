@@ -10,8 +10,8 @@ public class BaseConfiguration<TEntity> : IEntityTypeConfiguration<TEntity> wher
     {
         builder.HasKey(x => x.Id);
         builder.Property(x => x.Id).HasColumnName("ID").IsRequired();
-        builder.Property(x => x.CreateDate).HasColumnName("CreateDate").HasDefaultValueSql("GETDATE()").IsRequired();
-        builder.Property(x => x.UpdateDate).HasColumnName("UpdateDate");
+        builder.Property(x => x.CreatedDate).HasColumnName("CreateDate").HasDefaultValueSql("GETDATE()").IsRequired();
+        builder.Property(x => x.UpdatedDate).HasColumnName("UpdateDate");
 
     }
 }
