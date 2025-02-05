@@ -15,6 +15,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Application\Application.csproj" />
     <ProjectReference Include="..\..\Core\Security\Security.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\BackgroundService\BackgroundService.csproj" />
     <ProjectReference Include="..\..\Infrastructure\Persistence\Persistence.csproj" />
   </ItemGroup>
 

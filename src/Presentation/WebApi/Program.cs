@@ -1,4 +1,5 @@
 using Application;
+using BackgroundService;
 using Persistence;
 using Security;
 using Security.JWT;
@@ -15,6 +16,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddPersistenceServices(builder.Configuration);
 builder.Services.AddSecurityServices();
+builder.Services.AddBackgroundServiceServices();
 builder.Services.AddApplicationServices();
 
 const string tokenOptionsConfigurationSection = "TokenOptions";
