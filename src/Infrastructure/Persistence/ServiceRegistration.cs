@@ -15,6 +15,8 @@ public static class ServiceRegistration
 
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IMeetingRepository, MeetingRepository>();
+        services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
+
 
         return services;
     }

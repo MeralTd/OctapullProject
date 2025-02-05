@@ -16,5 +16,16 @@ public class AuthController : BaseApiController
     {
         return GetResponseOnlyResult(await Mediator.Send(createUser));
     }
+
+    [Consumes("application/json")]
+    [Produces("application/json", "text/plain")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IResult))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(IResult))]
+    [HttpPost]
+    public async Task<IActionResult> Login([FromBody] LoginUser loginUser)
+    {
+        return GetResponseOnlyResult(await Mediator.Send(loginUser));
+    }
+
 }
 

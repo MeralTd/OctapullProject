@@ -38,14 +38,14 @@ public class GenericRepository<TEntity, TContext> : IGenericRepository<TEntity> 
         }
     }
 
-    public virtual async Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> filter = null)
+    public virtual async Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> filter = null, CancellationToken cancellationToken = default)
     {
         try
         {
             await using TContext context = new();
             return filter == null
-                ? await context.Set<TEntity>().FirstOrDefaultAsync()
-                : await context.Set<TEntity>().FirstOrDefaultAsync(filter);
+                ? await context.Set<TEntity>().FirstOrDefaultAsync(cancellationToken)
+                : await context.Set<TEntity>().FirstOrDefaultAsync(filter, cancellationToken);
         }
         catch (Exception ex)
         {

@@ -15,6 +15,7 @@ public partial class DataContext : DbContext
 
     public virtual DbSet<User> Users { get; set; }
 
+    public DbSet<RefreshToken> RefreshTokens { get; set; }
 
     public DataContext()
     {

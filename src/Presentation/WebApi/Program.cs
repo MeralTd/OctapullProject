@@ -1,5 +1,7 @@
 using Application;
 using Persistence;
+using Security;
+using Security.JWT;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,8 +14,14 @@ builder.Services.AddSwaggerGen();
 
 
 builder.Services.AddPersistenceServices(builder.Configuration);
+builder.Services.AddSecurityServices();
 builder.Services.AddApplicationServices();
 
+const string tokenOptionsConfigurationSection = "TokenOptions";
+TokenOptions tokenOptions =
+    builder.Configuration.GetSection(tokenOptionsConfigurationSection).Get<TokenOptions>()
+    ?? throw new InvalidOperationException($"\"{tokenOptionsConfigurationSection}\" section cannot found in configuration.");
+builder.Services.AddHealthChecks();
 
 var app = builder.Build();
 
