@@ -35,8 +35,8 @@ public partial class DataContext : DbContext
         foreach (EntityEntry<BaseEntity> entry in entries)
             _ = entry.State switch
             {
-                EntityState.Added => entry.Entity.CreateDate = DateTime.UtcNow,
-                EntityState.Modified => entry.Entity.UpdateDate = DateTime.UtcNow
+                EntityState.Added => entry.Entity.CreatedDate = DateTime.UtcNow,
+                EntityState.Modified => entry.Entity.UpdatedDate = DateTime.UtcNow
             };
         return await base.SaveChangesAsync(cancellationToken);
     }
