@@ -2,7 +2,9 @@ using Application.Interfaces.Repository;
 using Application.Wrappers.Results;
 using AutoMapper;
 using Domain.Entities;
+using Mailing;
 using MediatR;
+using MimeKit;
 using Security.Hashing;
 
 namespace Application.Features.Authorizations.Commands;
@@ -21,11 +23,13 @@ public class RegisterUser : IRequest<IResponseResult>
     {
         private readonly IMapper _mapper;
         private readonly IUserRepository _userRepository;
+        private readonly IMailService _mailService;
 
-        public RegisterUserHandler(IMapper mapper, IUserRepository userRepository)
+        public RegisterUserHandler(IMapper mapper, IUserRepository userRepository, IMailService mailService)
         {
             _mapper = mapper;
             _userRepository = userRepository;
+            _mailService = mailService;
         }
 
         public async Task<IResponseResult> Handle(RegisterUser request, CancellationToken cancellationToken)
@@ -42,6 +46,20 @@ public class RegisterUser : IRequest<IResponseResult>
             user.PasswordSalt = passwordSalt;
             await _userRepository.AddAsync(user);
 
+
+
+            var toEmailList = new List<MailboxAddress>();
+
+
+            toEmailList.Add(new MailboxAddress(name: user.FirstName + " " + user.LastName, address: user.Email));
+
+            await _mailService.SendEmailAsync(new Mail
+            {
+                ToList = toEmailList,
+                BccList = null,
+                Subject = "Your Registration is Completed - Welcome!",
+                HtmlBody = $"Hello {user.FirstName}, <br> <br> Your account has been successfully created! You can now start using all the features that Octapull has to offer."
+            });
 
 
             return new SuccessResult("You have successfully registered, please check your mailbox.");

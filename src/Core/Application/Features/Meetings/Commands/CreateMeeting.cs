@@ -1,8 +1,11 @@
+using Application.Features.Meetings.Dtos;
 using Application.Interfaces.Repository;
 using Application.Wrappers.Results;
 using AutoMapper;
 using Domain.Entities;
+using Mailing;
 using MediatR;
+using MimeKit;
 
 namespace Application.Features.Meetings.Commands;
 
@@ -18,21 +21,55 @@ public class CreateMeeting : IRequest<IDataResult<Meeting>>
 
     public string? Document { get; set; }
 
+    public EmailDto? Email { get; set; }
+
     public class CreateMeetingHandler : IRequestHandler<CreateMeeting, IDataResult<Meeting>>
     {
         private readonly IMapper _mapper;
         private readonly IMeetingRepository _meetingRepository;
+        private readonly IMailService _mailService;
 
-        public CreateMeetingHandler(IMeetingRepository MeetingRepository, IMapper mapper)
+        public CreateMeetingHandler(IMapper mapper, IMeetingRepository MeetingRepository, IMailService mailService)
         {
-            _meetingRepository = MeetingRepository;
             _mapper = mapper;
+            _meetingRepository = MeetingRepository;
+            _mailService = mailService;
         }
 
         public async Task<IDataResult<Meeting>> Handle(CreateMeeting request, CancellationToken cancellationToken)
         {
             var meeting = _mapper.Map<Meeting>(request);
             await _meetingRepository.AddAsync(meeting);
+
+
+            if (request.Email != null)
+            {
+                var toEmailList = new List<MailboxAddress>();
+
+
+                toEmailList.Add(new MailboxAddress(name: request.Email.FullName, address: request.Email.Email));
+
+                await _mailService.SendEmailAsync(new Mail
+                {
+                    ToList = toEmailList,
+                    BccList = null,
+                    Subject = "A Meeting has been created",
+                    HtmlBody = $@"
+                    <html>
+                        <body>
+                            <p>Hello {request.Email.FullName},</p>
+                            <p>A meeting has been created! Meeting details are provided below: </p>
+                            <p><strong>Meeting Topic:</strong> {meeting.MeetingName}</p>
+                            <p><strong>Date and Time:</strong> {meeting.StartDate}</p>
+                            <p><strong>Explanation:</strong>{meeting.Description}</p>
+                        </body>
+                    </html>"
+                });
+            }
+
+
+
+
             return new SuccessDataResult<Meeting>(meeting, "Meeting created");
         }
     }

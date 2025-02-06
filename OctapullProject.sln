@@ -21,7 +21,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApi", "src\Presentation\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Security", "src\Core\Security\Security.csproj", "{143D595A-AB7F-4E17-9964-D7EF71D15DEB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BackgroundService", "src\Infrastructure\BackgroundService\BackgroundService.csproj", "{0EE33806-9314-4721-B344-E2332EF6E701}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BackgroundService", "src\Infrastructure\BackgroundService\BackgroundService.csproj", "{0EE33806-9314-4721-B344-E2332EF6E701}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mailing", "src\Core\Mailing\Mailing.csproj", "{1A17A4BD-BBAA-4857-9C94-5BC6DD196ED7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -53,6 +55,10 @@ Global
 		{0EE33806-9314-4721-B344-E2332EF6E701}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0EE33806-9314-4721-B344-E2332EF6E701}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0EE33806-9314-4721-B344-E2332EF6E701}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A17A4BD-BBAA-4857-9C94-5BC6DD196ED7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A17A4BD-BBAA-4857-9C94-5BC6DD196ED7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A17A4BD-BBAA-4857-9C94-5BC6DD196ED7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A17A4BD-BBAA-4857-9C94-5BC6DD196ED7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -67,6 +73,7 @@ Global
 		{1BD3A797-058F-42AE-9062-07B5CD87FA75} = {6EED5916-8FD7-4723-91BC-C3D2615A4728}
 		{143D595A-AB7F-4E17-9964-D7EF71D15DEB} = {2BB26E70-8E32-4622-B2A1-3C8786820F0F}
 		{0EE33806-9314-4721-B344-E2332EF6E701} = {84D7AE2F-D3E3-48EB-81B5-6F05350ECB00}
+		{1A17A4BD-BBAA-4857-9C94-5BC6DD196ED7} = {2BB26E70-8E32-4622-B2A1-3C8786820F0F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {69C37922-30C9-4238-96AC-7083BC2B4588}

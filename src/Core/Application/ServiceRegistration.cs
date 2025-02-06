@@ -1,4 +1,5 @@
 using Application.Pipelines.Transaction;
+using Mailing;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 
@@ -15,6 +16,8 @@ public static class ServiceRegistration
             configuration.RegisterServicesFromAssemblies(assembly);
             configuration.AddOpenBehavior(typeof(TransactionScopeBehavior<,>));
         });
+
+        services.AddSingleton<IMailService, MailKitMailService>();
 
 
         return services;
