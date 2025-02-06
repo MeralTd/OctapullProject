@@ -29,6 +29,7 @@ public class DeleteMeeting : IRequest<IResponseResult>
 
 
             meeting.IsCancelled = true;
+            meeting.IsCancelledDate = DateTime.UtcNow;
             await _meetingRepository.UpdateAsync(meeting);
 
             //await _meetingRepository.RemoveAsync(meeting);

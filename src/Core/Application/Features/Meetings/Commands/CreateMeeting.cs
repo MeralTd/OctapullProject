@@ -67,9 +67,6 @@ public class CreateMeeting : IRequest<IDataResult<Meeting>>
                 });
             }
 
-
-
-
             return new SuccessDataResult<Meeting>(meeting, "Meeting created");
         }
     }

@@ -37,8 +37,7 @@ public class UpdateMeeting : IRequest<IResponseResult>
                 return new ErrorResult("Meeting not found");
 
             var meetingMap = _mapper.Map<Meeting>(request);
-            meetingMap.CreatedDate = meeting.CreatedDate;
-            meetingMap.UpdatedDate = DateTime.Now;
+            meetingMap.UpdatedDate = DateTime.UtcNow;
             await _meetingRepository.UpdateAsync(meetingMap);
             return new SuccessResult("Meeting updated");
         }

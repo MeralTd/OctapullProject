@@ -14,5 +14,7 @@ public class Meeting : BaseEntity
 
     public string? Document { get; set; }
     public bool IsCancelled { get; set; }
+    public DateTime? IsCancelledDate { get; set; }
+
 
 }

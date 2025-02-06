@@ -18,4 +18,5 @@ public class User : BaseEntity
 
     public string? ProfilUrl { get; set; }
 
+    public virtual ICollection<RefreshToken> RefreshTokens { get; set; } = null!;
 }

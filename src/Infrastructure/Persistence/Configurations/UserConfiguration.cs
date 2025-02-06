@@ -17,6 +17,8 @@ public class UserConfiguration : BaseConfiguration<User>
         builder.Property(e => e.LastName).HasMaxLength(50);
         builder.Property(e => e.PhoneNumber).HasMaxLength(15);
 
+        builder.HasMany(u => u.RefreshTokens);
+
         base.Configure(builder);
     }
 }

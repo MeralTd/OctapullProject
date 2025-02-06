@@ -17,6 +17,7 @@ public class MeetingConfiguration : BaseConfiguration<Meeting>
         builder.Property(e => e.MeetingName).HasMaxLength(50);
         builder.Property(e => e.StartDate).HasColumnType("datetime");
         builder.Property(x => x.IsCancelled).HasColumnName("IsCancelled").IsRequired();
+        builder.Property(x => x.IsCancelledDate).HasColumnName("IsCancelledDate");
 
         base.Configure(builder);
     }
