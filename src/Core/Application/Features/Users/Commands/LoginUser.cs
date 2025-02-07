@@ -1,7 +1,9 @@
 using Application.Features.Authorizations.Dtos;
+using Application.Features.Users.Dtos;
 using Application.Interfaces.Repository;
 using Application.Pipelines.Transaction;
 using Application.Wrappers.Results;
+using AutoMapper;
 using Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -14,17 +16,19 @@ public class LoginUser : IRequest<IDataResult<LoggedResponseDto>>, ITransactiona
 {
     public string Email { get; set; }
     public string Password { get; set; }
-    public string IpAddress { get; set; }
+    //public string IpAddress { get; set; }
 
     public class LoginUserHandler : IRequestHandler<LoginUser, IDataResult<LoggedResponseDto>>
     {
+        private readonly IMapper _mapper;
         private readonly IUserRepository _userRepository;
         private readonly ITokenHelper _tokenHelper;
         private readonly IRefreshTokenRepository _refreshTokenRepository;
         private readonly TokenOptions _tokenOptions;
 
-        public LoginUserHandler(IUserRepository userRepository, ITokenHelper tokenHelper, IRefreshTokenRepository refreshTokenRepository, TokenOptions tokenOptions)
+        public LoginUserHandler(IMapper mapper, IUserRepository userRepository, ITokenHelper tokenHelper, IRefreshTokenRepository refreshTokenRepository, TokenOptions tokenOptions)
         {
+            _mapper = mapper;
             _userRepository = userRepository;
             _tokenHelper = tokenHelper;
             _refreshTokenRepository = refreshTokenRepository;
@@ -42,7 +46,7 @@ public class LoginUser : IRequest<IDataResult<LoggedResponseDto>>, ITransactiona
 
 
             var accessToken = _tokenHelper.CreateToken(user);
-            var createdRefreshToken = _tokenHelper.CreateRefreshToken(user, request.IpAddress);
+            var createdRefreshToken = _tokenHelper.CreateRefreshToken(user);
             var addedRefreshToken = await _refreshTokenRepository.AddAsync(createdRefreshToken);
 
             List<RefreshToken> refreshTokens = await _refreshTokenRepository
@@ -58,9 +62,12 @@ public class LoginUser : IRequest<IDataResult<LoggedResponseDto>>, ITransactiona
 
             await _refreshTokenRepository.DeleteRangeAsync(refreshTokens);
 
+            var userDto = _mapper.Map<UserDto>(user);
+
             LoggedResponseDto loggedResponse = new();
             loggedResponse.AccessToken = accessToken;
             loggedResponse.RefreshToken = addedRefreshToken;
+            loggedResponse.User = userDto;
             return new SuccessDataResult<LoggedResponseDto>(loggedResponse);
         }
     }

@@ -39,14 +39,14 @@ public class JwtHelper : ITokenHelper
         return new AccessToken { Token = token, Expiration = _accessTokenExpiration };
     }
 
-    public RefreshToken CreateRefreshToken(User user, string ipAddress)
+    public RefreshToken CreateRefreshToken(User user)
     {
         RefreshToken refreshTokenEntity = new()
         {
             UserId = user.Id,
             Token = RandomRefreshToken(),
             Expires = DateTime.UtcNow.AddDays(7),
-            CreatedByIp = ipAddress
+            //CreatedByIp = ipAddress
         };
 
         return refreshTokenEntity;

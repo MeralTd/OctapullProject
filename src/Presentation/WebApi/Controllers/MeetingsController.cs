@@ -3,10 +3,12 @@ using Application.Features.Meetings.Dtos;
 using Application.Features.Meetings.Queries;
 using Application.Wrappers.Results;
 using Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers
 {
+    [Authorize]
     [Route("api/[controller]/[action]")]
     [ApiController]
     public class MeetingsController : BaseApiController

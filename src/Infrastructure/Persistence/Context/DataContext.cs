@@ -29,8 +29,12 @@ public partial class DataContext : DbContext
 
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        optionsBuilder.EnableSensitiveDataLogging();
+        optionsBuilder.UseSqlServer("Server=.; Database=OctapullDB;User Id=sa;Password=1; TrustServerCertificate=True;");
 
-        => optionsBuilder.UseSqlServer("Server=.; Database=OctapullDB;User Id=sa;Password=1; TrustServerCertificate=True;");
+    }
+
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

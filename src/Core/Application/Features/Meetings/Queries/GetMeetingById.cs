@@ -23,7 +23,7 @@ public class GetMeetingById : IRequest<IDataResult<MeetingDto>>
 
         public async Task<IDataResult<MeetingDto>> Handle(GetMeetingById request, CancellationToken cancellationToken)
         {
-            var meeting = await _meetingRepository.GetAsync(x => x.Id == request.Id);
+            var meeting = await _meetingRepository.GetAsync(x => x.Id == request.Id && x.IsCancelled == false);
             if (meeting == null)
                 return new ErrorDataResult<MeetingDto>("Meeting not found");
 

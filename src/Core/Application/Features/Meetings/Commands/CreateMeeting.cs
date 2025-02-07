@@ -1,4 +1,4 @@
-using Application.Features.Meetings.Dtos;
+using Application.Features.Users.Dtos;
 using Application.Interfaces.Repository;
 using Application.Wrappers.Results;
 using AutoMapper;
@@ -21,7 +21,7 @@ public class CreateMeeting : IRequest<IDataResult<Meeting>>
 
     public string? Document { get; set; }
 
-    public EmailDto? Email { get; set; }
+    public UserDto? User { get; set; }
 
     public class CreateMeetingHandler : IRequestHandler<CreateMeeting, IDataResult<Meeting>>
     {
@@ -42,12 +42,12 @@ public class CreateMeeting : IRequest<IDataResult<Meeting>>
             await _meetingRepository.AddAsync(meeting);
 
 
-            if (request.Email != null)
+            if (request.User.Email != null)
             {
                 var toEmailList = new List<MailboxAddress>();
 
 
-                toEmailList.Add(new MailboxAddress(name: request.Email.FullName, address: request.Email.Email));
+                toEmailList.Add(new MailboxAddress(name: request.User.FirstName + ' ' + request.User.LastName, address: request.User.Email));
 
                 await _mailService.SendEmailAsync(new Mail
                 {
@@ -57,7 +57,7 @@ public class CreateMeeting : IRequest<IDataResult<Meeting>>
                     HtmlBody = $@"
                     <html>
                         <body>
-                            <p>Hello {request.Email.FullName},</p>
+                            <p>Hello {request.User.FirstName + ' ' + request.User.LastName},</p>
                             <p>A meeting has been created! Meeting details are provided below: </p>
                             <p><strong>Meeting Topic:</strong> {meeting.MeetingName}</p>
                             <p><strong>Date and Time:</strong> {meeting.StartDate}</p>
