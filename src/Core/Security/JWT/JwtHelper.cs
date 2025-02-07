@@ -4,6 +4,8 @@ using Microsoft.IdentityModel.Tokens;
 using Security.Encryption;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Cryptography;
+using System.Text;
+
 namespace Security.JWT;
 
 public class JwtHelper : ITokenHelper
@@ -21,7 +23,7 @@ public class JwtHelper : ITokenHelper
                             $"\"{configurationSection}\" section cannot found in configuration.");
     }
 
-    public AccessToken CreateToken(User user)
+    public AccessToken CreateToken2(User user)
     {
         var key = new byte[64]; // 512 bit için 64 byte
         using var rng = RandomNumberGenerator.Create();
@@ -34,6 +36,35 @@ public class JwtHelper : ITokenHelper
         var jwt = CreateJwtSecurityToken(_tokenOptions, user, signingCredentials);
         JwtSecurityTokenHandler jwtSecurityTokenHandler;
         jwtSecurityTokenHandler = new();
+        var token = jwtSecurityTokenHandler.WriteToken(jwt);
+
+        return new AccessToken { Token = token, Expiration = _accessTokenExpiration };
+    }
+
+
+    public AccessToken CreateToken(User user)
+    {
+
+        var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_tokenOptions.SecurityKey));
+
+        // Signing credentials oluşturuluyor
+        var signingCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+
+        // Token expiration (geçerlilik süresi)
+        _accessTokenExpiration = DateTime.Now.AddMinutes(_tokenOptions.AccessTokenExpiration);
+
+
+
+        // JWT token oluşturuluyor
+        var jwt = new JwtSecurityToken(
+            _tokenOptions.Issuer,  // Geçerli issuer (yayıncı)
+            _tokenOptions.Audience,  // Geçerli audience (hedef kitle)
+            expires: _accessTokenExpiration,
+            signingCredentials: signingCredentials
+        );
+
+        // Token yazma
+        var jwtSecurityTokenHandler = new JwtSecurityTokenHandler();
         var token = jwtSecurityTokenHandler.WriteToken(jwt);
 
         return new AccessToken { Token = token, Expiration = _accessTokenExpiration };

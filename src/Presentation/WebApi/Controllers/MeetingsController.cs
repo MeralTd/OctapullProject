@@ -61,5 +61,15 @@ namespace WebApi.Controllers
         {
             return GetResponseOnlyResult(await Mediator.Send(deleteMeeting));
         }
+
+        [Consumes("application/json")]
+        [Produces("application/json", "text/plain")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IResponseResult))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(IResponseResult))]
+        [HttpPost("{Id}")]
+        public async Task<IActionResult> CancelMeeting([FromRoute] CancelMeeting cancelMeeting)
+        {
+            return GetResponseOnlyResult(await Mediator.Send(cancelMeeting));
+        }
     }
 }

@@ -42,12 +42,12 @@ public class CreateMeeting : IRequest<IDataResult<Meeting>>
             await _meetingRepository.AddAsync(meeting);
 
 
-            if (request.User.Email != null)
+            if (request.User?.Email != null)
             {
                 var toEmailList = new List<MailboxAddress>();
 
 
-                toEmailList.Add(new MailboxAddress(name: request.User.FirstName + ' ' + request.User.LastName, address: request.User.Email));
+                toEmailList.Add(new MailboxAddress(name: request.User.FirstName + ' ' + request, address: request.User.FirstName + ' ' + request));
 
                 await _mailService.SendEmailAsync(new Mail
                 {

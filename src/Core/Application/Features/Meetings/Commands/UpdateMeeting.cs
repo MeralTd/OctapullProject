@@ -17,8 +17,6 @@ public class UpdateMeeting : IRequest<IResponseResult>
 
     public string? Description { get; set; }
 
-    public string? Document { get; set; }
-
     public class UpdateMeetingHandler : IRequestHandler<UpdateMeeting, IResponseResult>
     {
         private readonly IMeetingRepository _meetingRepository;

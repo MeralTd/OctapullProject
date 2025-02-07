@@ -26,13 +26,8 @@ public class DeleteMeeting : IRequest<IResponseResult>
             if (meeting == null)
                 return new ErrorResult("Meeting not found");
 
+            await _meetingRepository.RemoveAsync(meeting);
 
-
-            meeting.IsCancelled = true;
-            meeting.IsCancelledDate = DateTime.UtcNow;
-            await _meetingRepository.UpdateAsync(meeting);
-
-            //await _meetingRepository.RemoveAsync(meeting);
             return new SuccessResult("Meeting deleted");
         }
     }
